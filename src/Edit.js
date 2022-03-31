@@ -3,6 +3,7 @@ import { View, Text,TextInput,Button,KeyboardAvoidingView} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import EditStyles from '../Styles/EditStyles';
 import firestore from '@react-native-firebase/firestore';
+import allStrings from '../string/allString';
 
 const toast = () =>{
    Toast.show("Project Edited Successfully")
@@ -36,7 +37,7 @@ const Edit = ({ route }) => {
     return (
          <KeyboardAvoidingView behavior='position' style={EditStyles.mainView}>
             <View>
-               <Text style={EditStyles.text}>Edit task</Text>
+               <Text style={EditStyles.text}>{allStrings.inputPlaceholder.editTask}</Text>
             </View>
             <View style={EditStyles.textInput}>
                <TextInput 
@@ -69,7 +70,7 @@ const Edit = ({ route }) => {
                 </TextInput>
             </View> 
             <View style={EditStyles.view}>
-                <Button title="Edit Task" color='#FF0303' onPress={editTask}/>
+                <Button title={allStrings.inputPlaceholder.editTask} color='#FF0303' onPress={editTask}/>
             </View> 
           </KeyboardAvoidingView>
     );

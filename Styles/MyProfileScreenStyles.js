@@ -60,5 +60,8 @@ const MyProfileScreenStyles = StyleSheet.create({
       fontWeight:'bold',
       fontSize:18
     },
+    margin:{
+      margin:hp(1)
+    }
   });
   export default MyProfileScreenStyles;

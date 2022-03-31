@@ -1,172 +1,129 @@
-// import React, { Component,useState } from "react";
-// import { StyleSheet, Text, View, FlatList } from "react-native";
-// import { SearchBar } from "react-native-elements";
-// import HomeScreenStyles from "../Styles/HomeScreenStyles";
-
-// const DATA = [
-// {
-// 	id: "1",
-// 	title: "jyothi.menda@synclovis.com",
-// },
-// {
-// 	id: "2",
-// 	title: "sandeep.mishra@synclovis.com",
-// },
-// {
-// 	id: "3",
-// 	title: "saran.dhanush@synclovis.com",
-// },
-// {
-// 	id: "4",
-// 	title: "akshay.kumar@synclovis.com",
-// },
-// {
-// 	id: "5",
-// 	title: "shyam.prakash@synclovis.com",
-// },
-// {
-// 	id: "6",
-// 	title: "atif.equbal@synclovis.com",
-// },
-// {
-// 	id: "7",
-// 	title: "abdus.soyel@synclovis.com",
-// },
-// {
-// 	id: "8",
-// 	title: "sudhakar.reddy@synclovis.com",
-// },
-// {
-// 	id: "9",
-// 	title: "suraj.pandey@synclovis.com",
-// },
-// {
-// 	id: "10",
-// 	title: "anooj.krishnan@synclovis.com",
-// },
-// {
-// 	id: "11",
-// 	title: "sagar.acharya@synclovis.com",
-// },
-// ];
-
-// const Item = ({ title }) => {
-// return (
-// 	<View style={HomeScreenStyles.item}>
-// 	<Text>{title}</Text>
-// 	</View>
-// );
-// };
-
-// const renderItem = ({ item }) => <Item title={item.title} />;
-// class HomeScreen extends Component {
-// constructor(props) {
-// 	super(props);
-// 	this.state = {
-// 	loading: false,
-// 	data: DATA,
-// 	error: null,
-// 	searchValue: "",
-// 	};
-// 	this.arrayholder = DATA;
-// }
-
-// searchFunction = (text) => {
-// 	const updatedData = this.arrayholder.filter((item) => {
-// 	const item_data = `${item.title.toUpperCase()})`;
-// 	const text_data = text.toUpperCase();
-// 	return item_data.indexOf(text_data) > -1;
-// 	});
-// 	this.setState({ data: updatedData, searchValue: text });
-// };
-
-// render() {
-// 	return (  
-// 	<View style={HomeScreenStyles.container}>
-// 		<SearchBar
-// 		placeholder="Search Here..."
-// 		lightTheme
-// 		round
-// 		value={this.state.searchValue}
-// 		onChangeText={(text) => this.searchFunction(text)}
-// 		autoCorrect={false}
-// 		/>
-// 		<FlatList
-// 		data={this.state.data}
-// 		renderItem={renderItem}
-// 		keyExtractor={(item) => item.id}
-// 		/>
-// 	</View>
-// 	);
-// }
-// }
-
-  
-
-// export default HomeScreen;
-
-
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { widthPercentageToDP } from 'react-native-responsive-screen';
-import { FlatGrid } from 'react-native-super-grid';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import React, { useEffect, useState } from 'react';
+import { View, Text, Image } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-
-
-
+import HomeScreenStyles from '../Styles/HomeScreenStyles';
+import allStrings from '../string/allString';
 
 
 const HomeScreen = () => {
+  const [members, setMembers] = useState('');
+  const [issue, setIssue] = useState('');
+  const [solvedIssue, setsolvedIssue] = useState('');
+  const [reOpened, setReopened] = useState('')
+  const [pendingIssue, setPendingIssue] = useState('')
 
-  
-  const [items, setItems] = React.useState([
-    { name: 'TURQUOISE' },
-    { name: 'EMERALD'},
-    { name: 'PETER RIVER'},
-    { name: 'AMETHYST'},
-    { name: 'WET ASPHALT'},
-    { name: 'GREEN SEA' }
-  ]);
+
+  const totalMembers = () => {
+    const members = firestore().collection('Member').get().then(function (querySnapshot) {
+      console.log("Hello", querySnapshot.size);
+      setMembers(querySnapshot.size);
+
+    })
+  }
+  const totalIssue = () => {
+    const issues = firestore().collection('CreateTask').get().then(function (querySnapshot) {
+      console.log("Hey", querySnapshot.size);
+      setIssue(querySnapshot.size);
+
+    })
+  }
+
+  const solved = () => {
+    const solvedIssue = firestore().collection('CreateTask').where('Taskstatus', '==', 'Completed').get().then(function (querySnapshot) {
+      console.log("done", querySnapshot.size);
+      setsolvedIssue(querySnapshot.size);
+
+    })
+  }
+
+  const reopened = () => {
+    const open = firestore().collection('CreateTask').where('Taskstatus', '==', 'Reopened').get().then(function (querySnapshot) {
+      console.log("donedone", querySnapshot.size);
+      setReopened(querySnapshot.size);
+
+    })
+  }
+
+  const pending = () => {
+    const pendingIssue = firestore().collection('CreateTask').where('Taskstatus', '==', null).get().then(function (querySnapshot) {
+      console.log("donedone", querySnapshot.size);
+      setPendingIssue(querySnapshot.size);
+
+    })
+  }
+
+  useEffect(() => {
+    totalMembers();
+    totalIssue();
+    solved();
+    reopened();
+    pending();
+
+  }, []);
+
 
   return (
-    <FlatGrid
-      itemDimension={130}
-      data={items}
-      style={styles.gridView}
-      spacing={10}
-      renderItem={({ item }) => (
-        <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-          <Text style={styles.itemName}>{item.name}</Text>
-          <Text style={styles.itemCode}>{item.code}</Text>
+    <View>
+      <View style={HomeScreenStyles.mainView}>
+        <View style={HomeScreenStyles.border}>
+          <View style={HomeScreenStyles.flex}>
+            <Image style={HomeScreenStyles.picture} source={require('../../incognito/assets/member.png')} />
+            <View>
+              <Text style={HomeScreenStyles.text}>{allStrings.inputPlaceholder.totalMembers}</Text>
+              <Text></Text>
+              <Text style={HomeScreenStyles.text1}>{members}</Text>
+              <Text></Text>
+            </View>
+          </View>
         </View>
-      )}
-    />
+        <View style={HomeScreenStyles.border}>
+          <View style={HomeScreenStyles.flex}>
+            <Image style={HomeScreenStyles.picture} source={require('../../incognito/assets/issue.png')} />
+            <View>
+              <Text style={HomeScreenStyles.text}>{allStrings.inputPlaceholder.totalIssue}</Text>
+              <Text></Text>
+              <Text style={HomeScreenStyles.text1}>{issue}</Text>
+              <Text></Text>
+            </View>
+          </View>
+        </View>
+        <View style={HomeScreenStyles.border}>
+          <View style={HomeScreenStyles.flex}>
+            <Image style={HomeScreenStyles.picture} source={require('../../incognito/assets/solved1.png')} />
+            <View>
+              <Text style={HomeScreenStyles.text3}>{allStrings.inputPlaceholder.solvedIssue}</Text>
+              <Text></Text>
+              <Text style={HomeScreenStyles.text1}>{solvedIssue}</Text>
+              <Text></Text>
+            </View>
+          </View>
+        </View>
+        <View style={HomeScreenStyles.border}>
+          <View style={HomeScreenStyles.flex}>
+            <Image style={HomeScreenStyles.picture} source={require('../../incognito/assets/pending.png')} />
+            <View>
+              <Text style={HomeScreenStyles.text3}>{allStrings.inputPlaceholder.pendingIssue}</Text>
+              <Text></Text>
+              <Text style={HomeScreenStyles.text1}>{pendingIssue}</Text>
+              <Text></Text>
+            </View>
+          </View>
+        </View>
+        <View style={HomeScreenStyles.border}>
+          <View style={HomeScreenStyles.flex}>
+            <Image style={HomeScreenStyles.picture} source={require('../../incognito/assets/reopened1.png')} />
+            <View>
+              <Text style={HomeScreenStyles.text3}>{allStrings.inputPlaceholder.reOpendedIssue}</Text>
+              <Text></Text>
+              <Text style={HomeScreenStyles.text1}>{reOpened}</Text>
+              <Text></Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
   );
 }
+
 export default HomeScreen;
-const styles = StyleSheet.create({
-  gridView: {
-    marginTop: 10,
-    flex: 1,
-  },
-  itemContainer: {
-    justifyContent: 'flex-end',
-    borderRadius:hp(2),
-    padding:hp(2),
-    height: hp(20),
-	borderWidth:hp(0.2),
-    borderColor: "black",
-	width:wp(45)
-  },
-  itemName: {
-    fontSize: 16,
-    color: 'black',
-    fontWeight: '600',
-  },
-  itemCode: {
-    fontWeight: '600',
-    fontSize: 12,
-    color: '#fff',
-  },
-});
+
