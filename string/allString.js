@@ -43,10 +43,18 @@ const inputPlaceholder = {
     createNewTaskButtonText: 'Create New Task',
     totalMembers: 'Total Number of Members',
     totalIssue: '   Total Number of Issues',
-    solvedIssue: 'Solved Issue',
+    solvedIssue: 'Solved issue',
     pendingIssue: 'Pending Issue',
-    reOpendedIssue: 'Reopned Issue'
-
+    reOpendedIssue: 'Reopned Issue',
+    roleText: 'You are ',
+    totalIssue: 'Total issues : ',
+    Pending: 'Pending issue : ',
+    select: 'Select team from the list',
+    projectName: 'Project name',
+    add: '+Add',
+    addProject: '+Add project',
+    search: 'Search project',
+    close: 'Close'
 
 
 }

@@ -43,6 +43,29 @@ const HomeScreenStyles = StyleSheet.create({
     color: 'black',
     fontWeight: 'bold',
     marginLeft: wp(15)
+  },
+  newBorder: {
+    borderWidth: hp(0.2),
+    height: hp(20),
+    width: wp(45),
+    margin: hp(0.5),
+    borderRadius: 10,
+    alignItems: 'center'
+  },
+  mainView: {
+    alignSelf: 'center',
+    alignItems: 'center',
+    marginLeft: wp(1.8),
+    marginTop: hp(2.5)
+  },
+  text1: {
+    color: 'black',
+    fontSize: hp(3),
+    margin: hp(3)
+  },
+  text2: {
+    color: 'black',
+    fontSize: hp(2.8)
   }
 })
 

@@ -6,8 +6,6 @@ import firestore from '@react-native-firebase/firestore';
 import allStrings from '../string/allString';
 
 
-
-
 const ManageTeammates = () => {
   const [member, setMember] = useState('');
   const [users, setUsers] = useState('');
@@ -24,7 +22,9 @@ const ManageTeammates = () => {
     if (add && add._documentPath && add._documentPath.id) {
       await firestore().collection('Member').doc(add._documentPath.id).update({
         documentId: add._documentPath.id
+
       })
+      console.log(">>>", documentId)
     }
     toastMessage1();
   }
@@ -50,8 +50,6 @@ const ManageTeammates = () => {
       .collection('Member')
       .doc(item)
       .delete()
-      .then(() => {
-      });
   }
 
 
@@ -66,8 +64,8 @@ const ManageTeammates = () => {
 
 
   return (
-    <View>
-      <View>
+    <View style={ManageTeammatesStyles.view1}>
+      <View >
         <Text style={ManageTeammatesStyles.text}>{allStrings.inputPlaceholder.manageTeammates}</Text>
       </View>
       <View style={ManageTeammatesStyles.manageEmail}>

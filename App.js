@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -6,6 +5,7 @@ import LoginScreen from './src/LoginScreen';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import BottomTabNavigation from './src/BottomTabNavigation'
 import { useAppContext } from './appContext';
+
 
 const stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -32,6 +32,10 @@ function App() {
   )
 }
 export default App;
+
+
+
+
 
 
 

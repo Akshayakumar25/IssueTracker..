@@ -3,6 +3,9 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 
 const ManageTeammatesStyles = StyleSheet.create({
+  view1: {
+    marginBottom: hp(29)
+  },
   textInput: {
     borderWidth: 1,
     borderColor: "#dce0e6",
@@ -19,7 +22,7 @@ const ManageTeammatesStyles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     fontSize: hp(3),
-    marginTop: hp(3)
+    marginTop: hp(2)
   },
   manageEmail: {
     alignSelf: 'center',
@@ -28,7 +31,6 @@ const ManageTeammatesStyles = StyleSheet.create({
   managee:
   {
     alignSelf: 'center',
-    marginTop: hp(10)
   },
   margin: {
     margin: hp(1)
@@ -38,7 +40,7 @@ const ManageTeammatesStyles = StyleSheet.create({
     flex: 1
   },
   card: {
-    marginTop: hp(5),
+    marginTop: hp(1.5),
     alignSelf: 'center',
     height: hp(10),
     width: wp(95),

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, View, TouchableOpacity, TextInput, TouchableHighlight } from 'react-native';
+import { Text, View, TouchableOpacity, TextInput, TouchableHighlight, Alert } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import firestore from '@react-native-firebase/firestore';
@@ -10,6 +10,7 @@ import auth from '@react-native-firebase/auth';
 // import appContext from '../src/context/appContext';
 import allStrings from '../string/allString';
 import { useAppContext, useAppContextUpate } from '../appContext';
+import { Picker } from '@react-native-picker/picker';
 
 const Register = (props) => {
   const navigation = useNavigation();
@@ -21,24 +22,29 @@ const Register = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
-  // const [emailState, setEmailState] = useState(false);
-  // const [nameState, setNameState] = useState(false);
   const [nameError, setnameError] = useState('');
-  // const [checkPassword, setCheckPassword] = useState(false);
   const [passwordError, setPasswordError] = useState('')
-  // const [isSignedIn, setIsSignedIn] = useContext(appContext);
-  const [state, setState] = useState(true)
   const update = useAppContextUpate();
-  const token = useAppContext()
+  const token = useAppContext();
+  const [pickerValue, setPickerValue] = useState('')
 
 
 
   const handleAllFunction = () => {
-    emailValidation();
-    nameValidation();
-    passwordValidation();
-    handleAuthentication();
-    toastMessage();
+    if (email && name && password && pickerValue) {
+      try {
+        emailValidation();
+        nameValidation();
+        passwordValidation();
+        handleAuthentication();
+        toastMessage();
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      Alert.alert("Please Enter All fields")
+    }
+
   }
 
   const emailValidation = () => {
@@ -75,17 +81,21 @@ const Register = (props) => {
       console.log("data", isUserCreated, token);
       userData();
     } catch (error) {
-      console.log(error)
+      console.log("{{}}", error.code)
+      ToastMessage2(error.code)
     }
   }
 
-
   const userData = () => {
-    const user = firestore().collection('userData').add({ userName: name, userEmail: email })
+    const user = firestore().collection('userData').add({ userName: name, userEmail: email, role: pickerValue })
   }
 
   const toastMessage = () => {
     Toast.show("You are successfully registered")
+  }
+
+  const ToastMessage2 = (msg) => {
+    Toast.show(msg);
   }
 
 
@@ -121,6 +131,15 @@ const Register = (props) => {
           </TextInput>
         </View>
         <Text>{passwordError}</Text>
+      </View>
+      <View style={RegisterScreenStyles.picker}>
+        <Picker selectedValue={pickerValue} style={RegisterScreenStyles.textInput}
+          onValueChange={(itemValue) => setPickerValue(itemValue)}>
+          <Picker.Item label="Select your Role" />
+          <Picker.Item label="User" value="User" />
+          <Picker.Item label="Tester" value="Tester" />
+          <Picker.Item label="Admin" value="Admin" />
+        </Picker>
       </View>
       <View style={RegisterScreenStyles.view}>
         <TouchableHighlight

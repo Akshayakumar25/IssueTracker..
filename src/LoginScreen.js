@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Text, View,TouchableOpacity,TextInput,TouchableHighlight} from 'react-native';
+import { Text, View,TouchableOpacity,TextInput,TouchableHighlight,Alert} from 'react-native';
 import { NavigationContainer ,useNavigation} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import allStrings from '../string/allString';
@@ -22,19 +22,24 @@ const Login = (props) => {
   const update = useAppContextUpate()
 
   const handleLogin = async() =>{
-        try {
-          const data = await auth().signInWithEmailAndPassword(email,password);
-          console.log("::::|||",data)
-          if(data){
-          update(false);
-          console.log('User Loged In');
-          ToastMessage();
+        if(email && password){
+          try {
+            const data = await auth().signInWithEmailAndPassword(email,password);
+            console.log("::::|||",data)
+            if(data){
+            update(false);
+            console.log('User Loged In');
+            ToastMessage();
+          }
+          } catch (error) {
+            console.log(":: error ", error.code);
+            ToastMessage2(error.code)
+          }
+        }else{
+          Alert.alert("Enter All fields")
+          
         }
-        } catch (error) {
-          console.log(":: error ", error.code);
-          ToastMessage2(error.code)
-        }
-      }
+  }
     
       const ToastMessage = () =>{
         Toast.show('You are successfully logged in');

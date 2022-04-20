@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -9,8 +8,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import 'react-native-gesture-handler';
 import HomeScreen from './HomeScreen';
 import AdminScreen from './AdminScreen';
-import IssueListScreen from './IssueListScreen';
 import MyProfileScreen from './MyProfileScreen';
+import project from './project';
 
 
 const stack = createNativeStackNavigator();
@@ -31,12 +30,12 @@ const BottomTabNavigation = () => {
             <Ionicons name={"download"} color={"#4287f5"} size={50} />
           }
         }} />
-        <Tab.Screen name='Member' component={AdminScreen} options={{
+        <Tab.Screen name='Admin' component={AdminScreen} options={{
           tabBarIcon: ({ color, size }) => {
             <Ionicons name={"download"} color={color} size={size} />
           }
         }} />
-        <Tab.Screen name='Issue' component={IssueListScreen} options={{
+        <Tab.Screen name='projects' component={project} options={{
           tabBarIcon: ({ color, size }) => {
             <Ionicons name="download" color={'black'} size={16} />
           }
